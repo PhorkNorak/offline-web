@@ -172,11 +172,13 @@ class OfflineTodoApp {
         console.log('Online status:', this.isOnline);
         if (this.isOnline) {
             this.offlineIndicator.className = 'offline-indicator online';
+            this.offlineIndicator.innerHTML = '<span>●</span> Online Mode';
             setTimeout(() => {
                 this.offlineIndicator.className = 'offline-indicator';
             }, 3000);
         } else {
             this.offlineIndicator.className = 'offline-indicator offline';
+            this.offlineIndicator.innerHTML = '<span>●</span> Offline Mode';
         }
     }
 
