@@ -1,14 +1,17 @@
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
-    const swCode = `
-        const CACHE_NAME = 'todo-app-v1';
-        const urlsToCache = [
-            '.',
-            'index.html',
-            'styles.css',
-            'script.js',
-            'data:application/json;base64,ewogICJuYW1lIjogIk9mZmxpbmUgVG8tRG8gQXBwIiwKICAic2hvcnRfbmFtZSI6ICJUb0RvIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiM2NjdlZWEiLAogICJ0aGVtZV9jb2xvciI6ICIjNjY3ZWVhIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTWpReElpQm9aV2xuYUhROUlqSTBNU0lnZG1sbGQwSnZlRDBpTUNBd0lESTBNU0F5TkRFaUlHWnBiR3c5SWlNMk5qZGxaV0VpUGp4d1lYUm9JR1E5SWsweE1qQXVOVlp5TmxNeE5qQXVNall4TGpVdE1USXlURGsyTGpReGJETTNMakV5YzJFek1pNHdOeUF6TWk0d055QXdJREF4TFM0d01pNHdPR3d0TVRJNElqQnRNaTR3TW1BeVNEYzJMakU0TFVjek5EY3VNaUE0T0RJdE1UUTBMams1VERJNExqUXlJSEEzTlY0aVBqd3ZjR0YwYUQ0OEwzTjJaejQ9IiwKICAgICAgInNpemVzIjogIjI0MXgyNDEiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ=='
-        ];
+const repoName = 'https://github.com/PhorkNorak/offline-web.git'; 
+
+const swCode = `
+    const CACHE_NAME = 'todo-app'; 
+    const urlsToCache = [
+        '/${repoName}/',
+        '/${repoName}/index.html',
+        '/${repoName}/styles.css',
+        '/${repoName}/script.js',
+        '/${repoName}/manifest.json',
+        '/${repoName}/icon.svg' 
+    ];
 
         self.addEventListener('install', event => {
             event.waitUntil(
