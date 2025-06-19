@@ -82,7 +82,6 @@ class OfflineTodoApp {
         this.render();
         this.updateStats();
         this.updateOnlineStatus();
-        this.setupOfflineHandling();
     }
     
     bindEvents() {
@@ -115,14 +114,7 @@ class OfflineTodoApp {
         });
     }
 
-    setupOfflineHandling() {
-        // Intercept form submissions and API calls for offline handling
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.ready.then(() => {
-                console.log('Service Worker ready for offline functionality');
-            });
-        }
-    }
+
 
     updateOnlineStatus() {
         if (this.isOnline) {
@@ -283,28 +275,14 @@ class OfflineTodoApp {
         } catch (error) {
             console.error('Sync failed:', error);
             this.showNotification('Sync failed. Will retry later.', 'error');
-            
-            // Mark items with sync errors
-            this.todos.forEach(todo => {
-                if (todo.syncStatus === 'pending') {
-                    todo.syncStatus = 'error';
-                }
-            });
-            this.render();
         } finally {
             this.showSyncIndicator(false);
         }
     }
 
     async simulateApiCall(action, data) {
-        // Simulate network delay and potential failures
-        await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
-        
-        // Simulate occasional failures (10% chance)
-        if (Math.random() < 0.1) {
-            throw new Error('Network error');
-        }
-        
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 500));
         console.log(`API ${action}:`, data);
         return { success: true };
     }
@@ -415,8 +393,7 @@ class OfflineTodoApp {
                 `;
             }
             
-            const syncClass = todo.syncStatus === 'pending' ? 'pending-sync' : 
-                            todo.syncStatus === 'error' ? 'sync-error' : '';
+            const syncClass = todo.syncStatus === 'pending' ? 'pending-sync' : '';
             
             return `
                 <li class="todo-item ${todo.completed ? 'completed' : ''} ${syncClass}">

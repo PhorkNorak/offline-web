@@ -212,10 +212,6 @@ h1 {
     border-left: 4px solid #ffa94d;
 }
 
-.todo-item.sync-error {
-    border-left: 4px solid #ff6b6b;
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;

@@ -1,8 +1,0 @@
-{
-  "name": "Offline To-Do App",
-  "short_name": "ToDo",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#667eea",
-  "theme_color": "#667eea"
-}
