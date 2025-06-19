@@ -3,13 +3,12 @@ if ('serviceWorker' in navigator) {
 const repoName = '/offline-web'; 
 
 const swCode = `
-    const CACHE_NAME = 'todo-app-v1'; 
+    const CACHE_NAME = 'todo-app-v3'; 
     const urlsToCache = [
         '${repoName}/',
         '${repoName}/index.html',
         '${repoName}/styles.css',
-        '${repoName}/script.js',
-        '${repoName}/manifest.json'
+        '${repoName}/script.js'
     ];
 
         self.addEventListener('install', event => {
@@ -28,7 +27,7 @@ const swCode = `
                         }
                         return fetch(event.request).catch(() => {
                             if (event.request.mode === 'navigate') {
-                                return caches.match('index.html');
+                                return caches.match('${repoName}/index.html');
                             }
                         });
                     })
@@ -48,9 +47,15 @@ const swCode = `
     navigator.serviceWorker.register(swUrl)
         .then(registration => {
             console.log('ServiceWorker registration successful');
+            console.log('Cache URLs will be:', [
+                repoName + '/',
+                repoName + '/index.html',
+                repoName + '/styles.css',
+                repoName + '/script.js'
+            ]);
         })
         .catch(error => {
-            console.log('ServiceWorker registration failed');
+            console.log('ServiceWorker registration failed:', error);
         });
 }
 
@@ -61,6 +66,9 @@ class OfflineTodoApp {
         this.currentFilter = 'all';
         this.editingId = null;
         this.isOnline = navigator.onLine;
+        
+        // Do an immediate connectivity check on startup
+        this.doConnectivityCheck();
         
         this.todoInput = document.getElementById('todoInput');
         this.addBtn = document.getElementById('addBtn');
@@ -103,20 +111,65 @@ class OfflineTodoApp {
 
         // Online/Offline event listeners
         window.addEventListener('online', () => {
+            console.log('Browser detected online');
             this.isOnline = true;
             this.updateOnlineStatus();
             this.syncData();
         });
 
         window.addEventListener('offline', () => {
+            console.log('Browser detected offline');
             this.isOnline = false;
             this.updateOnlineStatus();
         });
+
+        // Additional network check - test actual connectivity
+        this.startConnectivityMonitoring();
     }
 
 
 
+    async doConnectivityCheck() {
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 2000);
+            
+            const response = await fetch('/offline-web/index.html', { 
+                method: 'HEAD',
+                cache: 'no-cache',
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeout);
+            
+            if (response.ok && !this.isOnline) {
+                console.log('Connectivity check: online');
+                this.isOnline = true;
+                this.updateOnlineStatus();
+                this.syncData();
+            }
+            
+        } catch (error) {
+            if (this.isOnline) {
+                console.log('Connectivity check: offline', error.name);
+                this.isOnline = false;
+                this.updateOnlineStatus();
+            }
+        }
+    }
+
+    startConnectivityMonitoring() {
+        // Do initial check
+        this.doConnectivityCheck();
+        
+        // Then check every 3 seconds
+        setInterval(() => {
+            this.doConnectivityCheck();
+        }, 3000);
+    }
+
     updateOnlineStatus() {
+        console.log('Online status:', this.isOnline);
         if (this.isOnline) {
             this.offlineIndicator.className = 'offline-indicator online';
             setTimeout(() => {
@@ -148,7 +201,10 @@ class OfflineTodoApp {
         this.todoInput.value = '';
         
         if (!this.isOnline) {
+            console.log('Adding todo to pending sync (offline)');
             this.addToPendingSync('create', todo);
+        } else {
+            console.log('Creating todo online');
         }
         
         this.saveTodos();
@@ -243,6 +299,8 @@ class OfflineTodoApp {
         this.pendingSync.push(syncItem);
         this.savePendingSync();
     }
+
+
 
     async syncData() {
         if (!this.isOnline || this.pendingSync.length === 0) return;
