@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline To-Do App</title>
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk9mZmxpbmUgVG8tRG8gQXBwIiwKICAic2hvcnRfbmFtZSI6ICJUb0RvIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiM2NjdlZWEiLAogICJ0aGVtZV9jb2xvciI6ICIjNjY3ZWVhIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTWpReElpQm9aV2xuYUhROUlqSTBNU0lnZG1sbGQwSnZlRDBpTUNBd0lESTBNU0F5TkRFaUlHWnBiR3c5SWlNMk5qZGxaV0VpUGp4d1lYUm9JR1E5SWsweE1qQXVOVlp5TmxNeE5qQXVNall4TGpVdE1USXlURGsyTGpReGJETTNMakV5YzJFek1pNHdOeUF6TWk0d055QXdJREF4TFM0d01pNHdPR3d0TVRJNElqQnRNaTR3TW1BeVNEYzJMakU0TFVjek5EY3VNaUE0T0RJdE1UUTBMams1VERJNExqUXlJSEEzTlY0aVBqd3ZjR0YwYUQ0OEwzTjJaejQ9IiwKICAgICAgInNpemVzIjogIjI0MXgyNDEiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="offline-indicator" id="offlineIndicator">
+            <span>●</span> Offline Mode
+        </div>
+        
+        <div class="sync-indicator" id="syncIndicator">
+            <div class="spinner"></div> Syncing...
+        </div>
+        
+        <h1>✨ My Tasks</h1>
+        
+        <div class="input-container">
+            <input type="text" id="todoInput" placeholder="Add a new task..." maxlength="200">
+            <button id="addBtn">Add Task</button>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+
+        <ul id="todoList"></ul>
+        
+        <div class="stats">
+            <span id="totalTasks">Total: 0</span>
+            <span id="activeTasks">Active: 0</span>
+            <span id="completedTasks">Completed: 0</span>
+        </div>
+        
+        <div class="offline-actions">
+            <button id="syncBtn">Sync Now</button>
+            <button id="clearCacheBtn">Clear Cache</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
