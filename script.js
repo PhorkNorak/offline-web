@@ -326,6 +326,7 @@ class OfflineTodoApp {
             this.savePendingSync();
             this.saveTodos();
             this.render();
+            this.updateStats();
 
             // Show success message
             this.showNotification('Sync completed successfully!', 'success');
@@ -419,8 +420,16 @@ class OfflineTodoApp {
         this.activeTasks.textContent = `Active: ${active}`;
         this.completedTasks.textContent = `Completed: ${completed}`;
         
-        // Update sync button text
-        this.syncBtn.textContent = pendingCount > 0 ? `Sync (${pendingCount})` : 'Sync Now';
+        // Update sync button text and state
+        if (pendingCount > 0) {
+            this.syncBtn.textContent = `Sync (${pendingCount})`;
+            this.syncBtn.disabled = false;
+            this.syncBtn.style.opacity = '1';
+        } else {
+            this.syncBtn.textContent = 'All Synced ✓';
+            this.syncBtn.disabled = true;
+            this.syncBtn.style.opacity = '0.6';
+        }
     }
     
     render() {

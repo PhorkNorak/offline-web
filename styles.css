@@ -380,9 +380,14 @@ h1 {
     color: white;
 }
 
-#syncBtn:hover, #clearCacheBtn:hover {
+#syncBtn:hover:not(:disabled), #clearCacheBtn:hover {
     transform: translateY(-1px);
     opacity: 0.9;
+}
+
+#syncBtn:disabled {
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* Notification animations */
