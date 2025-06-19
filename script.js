@@ -1,16 +1,15 @@
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
-const repoName = 'https://github.com/PhorkNorak/offline-web.git'; 
+const repoName = '/offline-web'; 
 
 const swCode = `
-    const CACHE_NAME = 'todo-app'; 
+    const CACHE_NAME = 'todo-app-v1'; 
     const urlsToCache = [
-        '/${repoName}/',
-        '/${repoName}/index.html',
-        '/${repoName}/styles.css',
-        '/${repoName}/script.js',
-        '/${repoName}/manifest.json',
-        '/${repoName}/icon.svg' 
+        '${repoName}/',
+        '${repoName}/index.html',
+        '${repoName}/styles.css',
+        '${repoName}/script.js',
+        '${repoName}/manifest.json'
     ];
 
         self.addEventListener('install', event => {
